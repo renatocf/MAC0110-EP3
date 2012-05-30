@@ -30,6 +30,13 @@ class Imagem
   void filtroMedio(int tamanho)
   {
     
+    int[][] copia = new int[this.altura()][this.largura()];
+    for (int i = 0; i <= this.altura() - 1; i++) { //i corresponde às linhas
+      for (int j = 0; j <= this.largura() - 1; j++) {//j corresponde às colunas
+        copia[i][j] = this.pixels[i][j];
+      }
+    }
+    
     int n = 0;//Variável para guardar o novo valor cada pixel
     
     for (int i = 0; i <= this.altura() - 1; i++) { //i corresponde às linhas
@@ -39,7 +46,7 @@ class Imagem
           
           for (int k = i - tamanho/2; k <= i + tamanho/2; k++) {//k corresponde às linhas em volta do pixel[i][j]
             for (int h = j - tamanho/2; h <= j + tamanho/2; h++) {//h corresponde às colunas em volta do pixel[i][j]
-              n += this.pixels[k][h]; //Soma o valor do pixel[i+k][j+h] em n para depois dividir e obter a média
+              n += copia[k][h]; //Soma o valor do pixel[i+k][j+h] em n para depois dividir e obter a média
             }
           }// fecha os dois for's (k,h)
           n /= (tamanho * tamanho); //ainda precisa corrigir o arredondamento
@@ -59,28 +66,7 @@ class Imagem
   // Suaviza imagem com filtro mediano
   void filtroMediano(int tamanho)
   {
-    int[] n = new int [tamanho * tamanho];//Array para guardar os valores dos pixels adjacentes, para poder achar a mediana depois
-    
-    for (int i = 0; i <= this.altura() - 1; i++) { //i corresponde às linhas
-      for (int j = 0; j <= this.largura() - 1; j++) {//j corresponde às colunas
-        
-        if (i >= tamanho/2 && j >= tamanho/2 && i < this.altura() - tamanho/2 && j < this.largura() - tamanho/2) { //Se estiver no meio
-          
-          for (int k = i - tamanho/2; k <= i + tamanho/2; k++) {//k corresponde às linhas em volta do pixel[i][j]
-            for (int h = j - tamanho/2; h <= j + tamanho/2; h++) {//h corresponde às colunas em volta do pixel[i][j]
-              n += this.pixels[k][h]; //Soma o valor do pixel[i+k][j+h] em n para depois dividir e obter a média
-            }
-          }// fecha os dois for's (k,h)
-          n /= (tamanho * tamanho); //ainda precisa corrigir o arredondamento
-          if (n >= 255)
-            n = 255;
-          pixels[i][j] = n;
-          
-        }//fecha o if; ainda precisa fazer a suavização nos cantos
-        
-      }
-    }//fecha os dois for's (i,j)
-    
+    // Para voc� completar!
   }
   
   // Suaviza imagem com filtro gaussiano
