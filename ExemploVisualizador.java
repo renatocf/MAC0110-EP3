@@ -8,7 +8,7 @@ class ExemploVisualizador
     // Lê imagem
     Imagem barbara = LeituraEscritaImagem.leImagem("Barbara.pgm");
     
-    barbara.filtroMediano(7);
+    barbara.filtroGaussiano(0.9, 3);
     
     // Mostra imagem 
     vis.mostraImagem(barbara, "Barbara.pgm");
