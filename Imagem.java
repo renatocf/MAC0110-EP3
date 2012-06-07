@@ -215,25 +215,22 @@ class Imagem
                                         // Ele é um double para permitir que se encontre a mediana.
     int mediana = 0; // Váriável para guardar o valor da mediana
     
+    
     // Laço para percorrer a matriz 'copia' 
     for (int i = 0; i <= copia.length - 1; i++) { //i corresponde às linhas
       for (int j = 0; j <= copia[0].length - 1; j++) //j corresponde às colunas
       {
-        //if (//i >= tamanho/2 && j >= tamanho/2 && i < this.altura() - tamanho/2 && j < this.largura() - tamanho/2) { //Se estiver no meio
-        
-        for (int k= 0; k < tamanho; k++) {//k corresponde às linhas em volta do pixel[i][j]       
+        for (int k = 0; k < tamanho; k++) { //k corresponde às linhas em volta do pixel[i][j]       
           for (int h = 0; h < tamanho; h++) //h corresponde às colunas em volta do pixel[i][j]
           {
             // Os pixels fora da imagem (que não existem, na verdade) são ignorados
             // no cálculo da média - esta metodologia evita a exceção 'IndexArrayOutOfBoundsException'
             if(i - tamanho/2 + k < 0 || j - tamanho/2 + h < 0 || i - tamanho/2 + k > copia.length -1 || j - tamanho/2 + h > copia[0].length -1) 
-            {
               n[k * tamanho + h] = 256;
-            } 
             else 
               n[k * tamanho + h] = copia[i - tamanho/2 + k][j - tamanho/2 + h]; //Soma o valor do pixel[i+k][j+h] em n para depois dividir e obter a média
           }
-        }// fecha os dois for's (k,h)
+        } // fecha os dois for's (k,h)
         
         
         mediana = medianaDoArray(n);
@@ -258,7 +255,7 @@ class Imagem
     // VALOR IDEAL DE TESTE: sigma = 1; tamanho = 3 || 5;
     // melhor teste até o momento: sigma 0.9, tamanho = 3;
   {
-    if(tamanho % 2 == 0 || tamanho <= 0)
+    if(tamanho % 2 == 0 || tamanho <= 0 || sigma < 0)
       throw new ArithmeticException();
     // Valores pares de tamanho de filtro são inválidos
     
