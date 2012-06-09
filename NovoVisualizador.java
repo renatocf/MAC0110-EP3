@@ -64,10 +64,19 @@ public class NovoVisualizador
     System.out.println("Digite o nome do arquivo:");
     String nome = sc.next();
     
-    if(nome.length() <= 4 || nome.charAt(nome.length()-5) != '.')
-      nome = nome + ".pgm";
+    String formato = ".pgm";
+    // Se o final do nome do arquivo não for .pgm (corres-
+    // pondente ao formato do arquivo), automaticamente adi-
+    // ciona-se a extensão a ele, para permitir a busca caso
+    // o usuário se esqueça de colocar o formato no final
+    // do nome do arquivo.
+    for(int i = 1; nome.length()-i > nome.length()-5; i--)
+      if(nome.charAt(nome.length()-i) != formato.charAt(formato.length()-i)) 
+      {
+        nome = nome + ".pgm"; 
+        break; 
+      }
     
-        
     imagemDoUsuario = LeituraEscritaImagem.leImagem(nome);
       
     if(imagemDoUsuario == null)
@@ -77,9 +86,14 @@ public class NovoVisualizador
       System.out.println("Arquivo não existente ou problema na leitura");
     else // Caso tudo tenha ocorrido bem
     {
-      nomeDaCopia = nome + "_copia.pgm";
+      nomeDaCopia = "";
+      for(int i=0; i < nome.length() - 4; i++)
+        nomeDaCopia += nome.charAt(i);
+      
+      nomeDaCopia += "_copia.pgm";
       // Faz o nome do arquivo que, posteriormente, será criado na pas-
       // ta da imagem original, armazenando a imagem suavizada.
+      
       LeituraEscritaImagem.escreveImagem(nomeDaCopia, imagemDoUsuario);
       // Cria um novo arquivo com a cópia, baseada na cópia suavizada.
     }
@@ -94,7 +108,7 @@ public class NovoVisualizador
     if(imagemDoUsuario == null)
       // Checa se a imagem do usuário teve retorno 'null', caso padrão
       // de retorno adotado pela classe 'LeituraEscritaImagem' no método
-      // 'leImagem' quando há uma exceção lançada.
+      // 'leImagem' quando há uma exceção lançada.322
       System.out.println("Arquivo não existente ou problema na leitura");
     else
       vis.mostraImagem(imagemDoUsuario, nome);
@@ -208,9 +222,24 @@ public class NovoVisualizador
   
   
   
-  private void gravaImagem()
+  private void gravaImagem() // Opção 6
   {
-    
+    try {
+      if(imagemDoUsuario == null)
+        // Checa se a imagem do usuário teve retorno 'null', caso padrão
+        // de retorno adotado pela classe 'LeituraEscritaImagem' no método
+        // 'leImagem' quando há uma exceção lançada.
+        System.out.println("Arquivo não existente ou problema na leitura");
+      else // Caso tudo tenha ocorrido bem
+      {
+        LeituraEscritaImagem.escreveImagem(nome, imagemDoUsuario);
+        // Sobrescreve o arquivo '_cópia' na imagem original,
+        // fazendo com que a esta tenha, a partir de então, 
+        // as suavizações realizadas na cópia.
+      }
+    } catch(NullPointerException e) {
+      e.printStackTrace();
+    }
   } // private void gravaImagem()
   
   
