@@ -62,7 +62,7 @@ public class NovoVisualizador
   private void lerImagem() // Opção 1
   {
     System.out.println("Digite o nome do arquivo:");
-    String nome = sc.next();
+    nome = sc.next();
     
     String formato = ".pgm";
     // Se o final do nome do arquivo não for .pgm (corres-
@@ -70,8 +70,8 @@ public class NovoVisualizador
     // ciona-se a extensão a ele, para permitir a busca caso
     // o usuário se esqueça de colocar o formato no final
     // do nome do arquivo.
-    for(int i = 1; nome.length()-i > nome.length()-5; i--)
-      if(nome.charAt(nome.length()-i) != formato.charAt(formato.length()-i)) 
+    for(int i = 1; i < 5; i++)
+      if(nome.charAt(nome.length()-i) != formato.charAt(4-i)) 
       {
         nome = nome + ".pgm"; 
         break; 
@@ -224,22 +224,17 @@ public class NovoVisualizador
   
   private void gravaImagem() // Opção 6
   {
-    try {
-      if(imagemDoUsuario == null)
+    if(imagemDoUsuario == null)
+      System.out.println("Arquivo não existente ou problema na leitura");
         // Checa se a imagem do usuário teve retorno 'null', caso padrão
         // de retorno adotado pela classe 'LeituraEscritaImagem' no método
         // 'leImagem' quando há uma exceção lançada.
-        System.out.println("Arquivo não existente ou problema na leitura");
-      else // Caso tudo tenha ocorrido bem
-      {
-        LeituraEscritaImagem.escreveImagem(nome, imagemDoUsuario);
+    else
+      LeituraEscritaImagem.escreveImagem(nome, imagemDoUsuario);
         // Sobrescreve o arquivo '_cópia' na imagem original,
         // fazendo com que a esta tenha, a partir de então, 
         // as suavizações realizadas na cópia.
-      }
-    } catch(NullPointerException e) {
-      e.printStackTrace();
-    }
+    
   } // private void gravaImagem()
   
   
