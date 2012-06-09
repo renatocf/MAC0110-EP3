@@ -16,25 +16,25 @@ import java.util.*;
 
 public class NovoVisualizador
 {
-  static Imagem imagemDoUsuario;
+  Imagem imagemDoUsuario;
   // Cria um objeto da classe 'Imagem' que tem o mesmo endereço de 
   // memória do retorno do método 'LeituraEscritaImagem', o qual
   // é também um objeto da classe 'Imagem' cujo atributo 'pixel'
   // (um vetor de inteiros) armazena as intensidades das cores cor-
   // respondentes a cada pixel da imagem.
       
-  static String nome;
+  String nome;
   // Variável para armazenar o nome do arquivo original
   
-  static String nomeDaCopia;
+  String nomeDaCopia;
   // Variável para armazenar o nome do arquivo que, posteriormente, 
   // será criado na pasta da imagem original, armazenando a imagem suavizada.
   
-  static Scanner sc = new Scanner(System.in);
+  Scanner sc = new Scanner(System.in);
   // Instanciando um objeto da classe Scanner, para interação
   // com o usuário via teclado.
   
-  static int chamadaGaussiano = 0;
+  int chamadaGaussiano = 0;
   
   
   NovoVisualizador()
@@ -43,7 +43,7 @@ public class NovoVisualizador
   }
   
   
-  static int opcao()
+  private int opcao()
   {
     int opcao = 0;
     do 
@@ -66,7 +66,7 @@ public class NovoVisualizador
   
   
   
-  static private void lerImagem() // Opção 1
+  private void lerImagem() // Opção 1
   {
     System.out.println("Digite o nome do arquivo:");
     String nome = sc.next();
@@ -94,7 +94,7 @@ public class NovoVisualizador
   
   
   
-  static private void visualizarImagem() // Opção 2
+  private void visualizarImagem() // Opção 2
   {
     VisualizadorImagem vis = new VisualizadorImagem();
     
@@ -109,7 +109,7 @@ public class NovoVisualizador
   
   
   
-  static private void filtroMedio() // Opção 3
+  private void filtroMedio() // Opção 3
   {    
     System.out.println("Qual o tamanho da vizinhança desejado?");
     String tamanho = sc.next();
@@ -132,7 +132,7 @@ public class NovoVisualizador
   
   
   
-  static private void filtroMediano() // Opção 4
+  private void filtroMediano() // Opção 4
   {    
     System.out.println("Qual o tamanho da vizinhança desejado?");
     String tamanho = sc.next();
@@ -155,7 +155,7 @@ public class NovoVisualizador
     
   
   
-  static private void filtroGaussiano() // Opção 5
+  private void filtroGaussiano() // Opção 5
   {    
     int tamanho = -1; double sigma = -1;
     chamadaGaussiano++;
@@ -205,6 +205,7 @@ public class NovoVisualizador
   
   public static void main(String[] args)
   {
+    NovoVisualizador menu = new NovoVisualizador();
     boolean fim = false;
     
     while(!fim)
@@ -222,23 +223,23 @@ public class NovoVisualizador
       
       
       System.out.println("Qual a sua opção?");
-      int opcao = opcao();
+      int opcao = menu.opcao();
       
       
       if(opcao == 1) // Opção1: Carregar imagem
-        lerImagem();
+        menu.lerImagem();
             
       if(opcao == 2) // Opção2: Visualizar imagem
-        visualizarImagem();
+        menu.visualizarImagem();
       
       if(opcao == 3) // Opção 3: filtro médio
-        filtroMedio();
+        menu.filtroMedio();
       
       if(opcao == 4) // Opção 4: filtro mediano
-        filtroMediano();
+        menu.filtroMediano();
       
       if(opcao == 5) // Opção 5: filtro gaussiano
-        filtroGaussiano();
+        menu.filtroGaussiano();
       
       if(opcao == 6)
         continue; // ainda não implementada
