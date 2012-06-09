@@ -34,13 +34,6 @@ public class NovoVisualizador
   // Instanciando um objeto da classe Scanner, para interação
   // com o usuário via teclado.
   
-  int chamadaGaussiano = 0;
-  
-  
-  NovoVisualizador()
-  {
-    chamadaGaussiano = 0;
-  }
   
   
   private int opcao()
@@ -77,7 +70,7 @@ public class NovoVisualizador
         
     imagemDoUsuario = LeituraEscritaImagem.leImagem(nome);
       
-      if(imagemDoUsuario == null)
+    if(imagemDoUsuario == null)
       // Checa se a imagem do usuário teve retorno 'null', caso padrão
       // de retorno adotado pela classe 'LeituraEscritaImagem' no método
       // 'leImagem' quando há uma exceção lançada.
@@ -156,50 +149,69 @@ public class NovoVisualizador
   
   
   private void filtroGaussiano() // Opção 5
-  {    
-    int tamanho = -1; double sigma = -1;
-    chamadaGaussiano++;
-    
-    if(tamanho != -1 || chamadaGaussiano == 0) 
+  {
+    int tamanho = 0; double sigma = 0;
+    boolean valorSigmaVálido = false, valorTamanhoVálido = false;
+        
+        
+    while(!valorTamanhoVálido)
     {
       System.out.println("Qual o tamanho da vizinhança desejado?");
     
-        try { tamanho = Integer.parseInt(sc.next());
+        try {
+          tamanho = Integer.parseInt(sc.next());
+          if(tamanho % 2 == 1 || tamanho < 0)
+            throw new ArithmeticException();
           // Buscando exceções para o tamanho da vizinhança
       
         } catch(NumberFormatException e) {
           System.out.println("Só são aceitos números inteiros!");
-          filtroGaussiano();
+          continue;
     
         } catch(ArithmeticException e) {
           System.out.println("Só são aceitos valores ímpares maiores que 0!");
-          filtroGaussiano();
+          continue;
     
         } // try-catch: Integer.parseInt(sc.next());
-    } // if(tamanho != -1)
+    
+        valorTamanhoVálido = true;
+    } // while(!valorTamanhoVálido)
     
     
-    if(sigma != -1 || chamadaGaussiano == 0)
+    while(!valorSigmaVálido)
     {
       System.out.println("Qual o desvio-padrão desejado?");
     
-        try { sigma = Double.parseDouble(sc.next());
-          // Buscando exceções para o desvio-padrão.
-    
-        } catch(NumberFormatException e) {
-          System.out.println("Só são aceitos números inteiros!");
-          filtroGaussiano();
-    
-        } catch(ArithmeticException e) {
-          System.out.println("Só são aceitos valores ímpares maiores que 0!");
-          filtroGaussiano();
-    
-        } // try-catch
-    } // if(sigma == -1)
+      try { 
+        sigma = Double.parseDouble(sc.next());
+        if(sigma <= 0)
+          throw new ArithmeticException();
+        // Buscando exceções para o desvio-padrão.
+        
+      } catch(NumberFormatException e) {
+        System.out.println("Só são aceitos números inteiros!");
+        continue;
+        
+      } catch(ArithmeticException e) {
+        System.out.println("Só são aceitos valores maiores que 0!");
+        continue;
+        
+      } // try-catch: sigma = Double.parseDouble(sc.next());
+      
+      valorSigmaVálido = true;
+    } // while(!valorSigmaVálido)
     
     imagemDoUsuario.filtroGaussiano(sigma, tamanho);
+    // aplicando o Filtro Gaussiano na cópia da imagem.
     
   } // static private void filtroGaussiano()
+  
+  
+  
+  private void gravaImagem()
+  {
+    
+  } // private void gravaImagem()
   
   
   
@@ -241,8 +253,11 @@ public class NovoVisualizador
       if(opcao == 5) // Opção 5: filtro gaussiano
         menu.filtroGaussiano();
       
-      if(opcao == 6)
+      if(opcao == 6) // Opção 6: gravar imagem
+      {
+        menu.gravaImagem();
         continue; // ainda não implementada
+      }
         
       if(opcao == 7) // Opção 7: fim
         fim = true;
