@@ -48,7 +48,7 @@ public class NovoVisualizador
         continue;
       }
       
-      if(opcao <= 0 || opcao > 8) {
+      if(opcao <= 0 || opcao > 7) {
         System.out.println("Só existem 7 opções, de 1 a 7...");
         opcao = 0; continue;
       }  
@@ -63,6 +63,10 @@ public class NovoVisualizador
   {
     System.out.println("Digite o nome do arquivo:");
     nome = sc.next();
+    
+    if(nome.equals("sair"))
+      return; // A entrada "sair" permite que o usuário saia da
+              // opção selecionada
     
     String formato = ".pgm";
     // Se o final do nome do arquivo não for .pgm (corres-
@@ -96,6 +100,9 @@ public class NovoVisualizador
       
       LeituraEscritaImagem.escreveImagem(nomeDaCopia, imagemDoUsuario);
       // Cria um novo arquivo com a cópia, baseada na cópia suavizada.
+      
+      System.out.println("Leitura bem sucedida!");
+      System.out.println();
     }
   } // private void lerImagem(String nome)
   
@@ -121,6 +128,10 @@ public class NovoVisualizador
     System.out.println("Qual o tamanho da vizinhança desejado?");
     String tamanho = sc.next();
     
+    if(nome.equals("sair"))
+      return; // A entrada "sair" permite que o usuário saia da
+              // opção selecionada
+    
     try { // Pegando a possível exceção lançada pelo método 'filtro
           // medio', da classe 'Imagem', quando colocados valores pa-
           // res, negativos ou não inteiros como tamanho da vizinhança.
@@ -143,6 +154,10 @@ public class NovoVisualizador
   {    
     System.out.println("Qual o tamanho da vizinhança desejado?");
     String tamanho = sc.next();
+    
+    if(nome.equals("sair"))
+      return; // A entrada "sair" permite que o usuário saia da
+              // opção selecionada
     
     try { // Pegando a possível exceção lançada pelo método 'filtro
           // mediano', da classe 'Imagem', quando colocados valores pa-
@@ -171,10 +186,16 @@ public class NovoVisualizador
     while(!valorTamanhoVálido)
     {
       System.out.println("Qual o tamanho da vizinhança desejado?");
-    
+      String entrada = sc.next();
+          
+      if(nome.equals("sair"))
+        return; // A entrada "sair" permite que o usuário saia da
+                // opção selecionada
+      
         try {
-          tamanho = Integer.parseInt(sc.next());
-          if(tamanho % 2 == 1 || tamanho < 0)
+          tamanho = Integer.parseInt(entrada);
+          
+          if(tamanho % 2 == 0 || tamanho < 0)
             throw new ArithmeticException();
           // Buscando exceções para o tamanho da vizinhança
       
@@ -195,9 +216,13 @@ public class NovoVisualizador
     while(!valorSigmaVálido)
     {
       System.out.println("Qual o desvio-padrão desejado?");
-    
+      String entrada = sc.next();
+          
+      if(nome.equals("sair"))
+        return;
+      
       try { 
-        sigma = Double.parseDouble(sc.next());
+        sigma = Double.parseDouble(entrada);
         if(sigma <= 0)
           throw new ArithmeticException();
         // Buscando exceções para o desvio-padrão.
@@ -224,20 +249,32 @@ public class NovoVisualizador
   
   private void gravaImagem() // Opção 6
   {
-    if(imagemDoUsuario == null)
-      System.out.println("Arquivo não existente ou problema na leitura");
-        // Checa se a imagem do usuário teve retorno 'null', caso padrão
-        // de retorno adotado pela classe 'LeituraEscritaImagem' no método
-        // 'leImagem' quando há uma exceção lançada.
-    else
-      LeituraEscritaImagem.escreveImagem(nome, imagemDoUsuario);
-        // Sobrescreve o arquivo '_cópia' na imagem original,
-        // fazendo com que a esta tenha, a partir de então, 
-        // as suavizações realizadas na cópia.
+    System.out.println("Você tem certeza que deseja substituir a imagem? [S/n]");
+    String resposta = sc.next();
     
+    if(resposta.equals("S") || resposta.equals("s"))
+    {
+      if(imagemDoUsuario == null)
+        System.out.println("Arquivo não existente ou problema na leitura");
+          // Checa se a imagem do usuário teve retorno 'null', caso padrão
+          // de retorno adotado pela classe 'LeituraEscritaImagem' no método
+          // 'leImagem' quando há uma exceção lançada.
+      else
+        LeituraEscritaImagem.escreveImagem(nome, imagemDoUsuario);
+          // Sobrescreve o arquivo '_cópia' na imagem original,
+          // fazendo com que a esta tenha, a partir de então, 
+          // as suavizações realizadas na cópia.
+    }
+    else if(resposta.equals("N") || resposta.equals("n"))
+      return;
+    else
+    {
+      System.out.print("Entrada incorreta. ");
+      gravaImagem();
+    }
   } // private void gravaImagem()
   
-  
+
   
   public static void main(String[] args)
   {
@@ -278,10 +315,7 @@ public class NovoVisualizador
         menu.filtroGaussiano();
       
       if(opcao == 6) // Opção 6: gravar imagem
-      {
         menu.gravaImagem();
-        continue; // ainda não implementada
-      }
         
       if(opcao == 7) // Opção 7: fim
         fim = true;

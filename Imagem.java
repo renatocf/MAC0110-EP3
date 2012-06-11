@@ -73,18 +73,25 @@ class Imagem
     // dos valores pelo algoritmo 'bubble sort'.
   {
     int auxiliar = 0;
+    // Inteiro auxiliar para guardar o valor
+    // trocado no bubble sort
     
-    for (int i = 0; i < n.length - 1; i++){
-      for (int j = i + 1; j < n.length; j++)
+    // Primeiro laço para contar o número de
+    // vezes que se percorrerá o vetor
+    for(int i=0; i < n.length - 1; i++) 
+    {
+      // Segundo laço para percorrer o vetor
+      for(int j=0; j < n.length - 2; j++) 
       {
-        if (n[i] > n[i+1]) 
-        {  
-          auxiliar = n[i];
-          n[i]= n[j];
+        if(n[j] > n[j+1])
+        {
+          auxiliar = n[j+1];
+          n[j+1] = n[j];
           n[j] = auxiliar;
         }
-      }  // for (int j= 1; j < n.length; j++)
-    } // for (int i = 0; i < n.length - 1; i++)
+      } // for(int j=0; j < n.length - 2; j++) 
+    } // for(int i=0; i < n.length - 1; i++)
+    
   } // organizaVetor
     
   
@@ -104,19 +111,17 @@ class Imagem
       if (i != 256)
         auxiliar ++;
     }
-    
-    int [] med = new int [auxiliar];
-    
-    if (med.length % 2 == 1)
+       
+    if (auxiliar % 2 == 1)
       // Se houver um número ímpar de valores considerados,
       // o valor central já será a mediana
-      return n[med.length / 2];
+      return n[auxiliar / 2];
     else {
       // Para um número par de valores considerados, fazemos
       // a média dos valores centrais para achar a mediana
       
       // Fazendo a média dos valores centrais:
-      double resultado = ((med[med.length / 2 -1] + med[med.length / 2]) / 2);
+      double resultado = ((n[auxiliar / 2 -1] + n[auxiliar / 2]) / 2);
       resultado = arredondaParaCima(resultado); // Arrendondamos o resultado,
                                                 // que pode ser quebrado, para
                                                 // cima
