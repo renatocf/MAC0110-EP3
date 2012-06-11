@@ -128,7 +128,7 @@ public class NovoVisualizador
     System.out.println("Qual o tamanho da vizinhança desejado?");
     String tamanho = sc.next();
     
-    if(nome.equals("sair"))
+    if(tamanho.equals("sair"))
       return; // A entrada "sair" permite que o usuário saia da
               // opção selecionada
     
@@ -155,7 +155,7 @@ public class NovoVisualizador
     System.out.println("Qual o tamanho da vizinhança desejado?");
     String tamanho = sc.next();
     
-    if(nome.equals("sair"))
+    if(tamanho.equals("sair"))
       return; // A entrada "sair" permite que o usuário saia da
               // opção selecionada
     
@@ -188,7 +188,7 @@ public class NovoVisualizador
       System.out.println("Qual o tamanho da vizinhança desejado?");
       String entrada = sc.next();
           
-      if(nome.equals("sair"))
+      if(entrada.equals("sair"))
         return; // A entrada "sair" permite que o usuário saia da
                 // opção selecionada
       
@@ -218,7 +218,7 @@ public class NovoVisualizador
       System.out.println("Qual o desvio-padrão desejado?");
       String entrada = sc.next();
           
-      if(nome.equals("sair"))
+      if(entrada.equals("sair"))
         return;
       
       try { 

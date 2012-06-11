@@ -1,0 +1,68 @@
+
+MAC0110 - EP3: SUAVIZAÇÃO DE IMAGENS
+-------------------------------------------------------
+
+
+* DA IMPLEMENTAÇÃO DA SUAVIZAÇÃO
+
+	A suavização é um recurso amplamente utilizado em softwares de edição de imagens. O código descrito permite edições em imagens no formato PGM, que utiliza valores inteiros para representar os tons de cinza, variando de 0 (preto) até 255 (branco).
+	O proceso de suavização consiste na observação dos pixels da região vizinha a uma certa unidade, com o objetivo de evitar variações bruscas de tons em regiões vizinhas. Neste programa, foram implementados 3 metodologias de suavização: média, mediana e distribuição gaussiana.
+
+
+ --	SUAVIZAÇÃO COM MÉDIA
+	
+	O uso da média é um dos conceitos mais simples na composição da implementação: de início, é criada uma cópia da matriz representativa da intensidade de cinza de cada pixel da imagem original. Essa cópia é usada para manter o cálculo da média baseado nos valores de intensidade original da imagem.
+	Em seguida, dado um certo raio de vizinhança como entrada, são analisados os pontos de entorno tendo como centro o primeiro pixel da matriz auxiliar (esta matriz é igual a imagem inicialmente). Calculada a média entre estes pixels (cuja tonalidade de cinza é representada por um número inteiro entre 0 e 255), substitui-se o valor da média pelo valor do pixel na matriz da imagem original.
+	O processo repete-se baseando-se em todos os pixels da matriz auxiliar e substituindo os valores na matriz original, suavizando-se, assim, a imagem.
+
+
+ --	SUAVIZAÇÃO COM MEDIANA
+	
+	Analogamente ao filtro médio, o filtro mediano usa uma matrix auxiliar, com valores iguais à matriz representativa dos valores dos pixels da imagem original, para manter o cálculo da suavização baseado na forma original da figura. Dessa vez, entretanto, usa-se um artifício diferente para achar a mediana:
+	Primeiro, baseado na vizinhança pedida pela matriz, fez-se um mini-vetor de tamanho do raio de vizinhança ao quadrado. Nele são armazenados dois valores: ou os valores iguais aos da imagem original ou o valor 256, padronizado para representar um pixel inexistente (os quais são considerados ao fazer o cálculo com as bordas). 
+	Sobre este vetor, apica-se o algoritmo de organização bubble sort, o qual deixa os valores em ordem crescente. Desconsiderando os valores 256 (que representam pixels que não existem), acha-se a mediana dos valores válidos. A mediana substitui, então, o valor do pixel na matriz representativa dos pixels da imagem. Repetindo o processo baseado em todos os pixels da matriz auxiliar, cria-se a imagem suavizada.
+
+
+-- SUAVIZAÇÃO COM DISTRIBUIÇÃO GAUSSIANA
+
+	A distribuição Gaussiana é um tipo de distribuição normal bivariada. Este tipo de comportamento de dados, comum na natureza, é o que mais ocorre ao se associar vários tipos de variáveis. Baseado na equação para um certo ponto, calcula-se o correspondente ao ponto por meio do raio de vizinhança e de um desvio-padrão, também transmitido pelos usuários como entrada para a criação da distribuição gaussiana.
+	Todos os valores são montados sobre a matriz correspondente aos valores dos pixels originais, sendo usado para tal uma matriz auxiliar igual à imagem antes da primeira modificação. Ao final, obtém-se a imagem suavizada.
+
+
+	Em todos os casos, para valores acima de 255, o valor é truncado para este limite máximo. Para resultados não-inteiros, utiliza-se o arredondamento para cima para definir o valor a ser armazenado.
+
+
+* DA INTERFACE DE COMUNICAÇÃO COM O USUÁRIO
+
+	A interface de comunicação com o usuário foi baseada em um menu de 7 opções, que permite o carregamento de imagens, visualização, aplicação dos filtros, substituição da imagem original e saída do programa. Abaixo listadas, estão o nome das opções e as entradas aceitas, com algumas notas dos recursos utilizados:
+
+1) 	Ler imagem
+    + ENTRADAS: Nome do arquivo;
+	+ NOTA: A string correspondente ao nome do arquivo não precisar ter a extensão ".pgm" no final (é verificado automaticamente a existência do nome do formato, e caso ele não exista, o programa internamente o coloca e tenta encontrar um arquivo com o nome + ".pgm" dentro do diretório em que ele está contido).
+
+2) 	Visualizar imagem
+	+ ENTRADAS: Não há;
+	+ NOTA: O método abre, automaticamente, uma janela que permite a visualização da imagem com as modificações feitas pelo usuário.
+
+3)	Suavizar com filtro médio
+	+ ENTRADAS: Tamanho da vizinhança;
+	+ NOTA: O tamanho da vizinhança (que deve ser inteiro positivo ímpar) é utilizado para definir, em torno de certo pixel, o setor da matriz total usado para calcular a média. Esta, depois, assume o valor do pixel base.
+
+4)	Suavizar com filtro mediano
+	+ ENTRADAS: Tamanho da vizinhança;
+	+ NOTA: O tamanho da vizinhança (que deve ser inteiro positivo ímpar) é utilizado para definir, em torno de certo pixel, o setor da matriz total usado para calcular a mediana. Esta, depois, assume o valor do pixel base.
+
+5)	Suavizar com filtro gaussiano
+	+ ENTRADAS: Tamanho da vizinhança, desvio-padrão;
+	+ NOTA: O tamanho da vizinhança (que deve ser inteiro positivo ímpar) é utilizado para definir, em torno de certo pixel, o setor da matriz total usado para calcular a função gaussiana. O desvio-padrão deve ser positivo, inteiro ou não. É importante escolher um valor proporcional ao raio da vizinhança, ou a suavização produz resultados extremados. No final do cálculo, o resultado da função assume o valor do pixel base.
+
+6)	Gravar imagem
+	+ ENTRADAS: Sim ('S' ou 's') ou não ('N' ou 'n');
+	+ NOTA: Foi adicionado uma mensagem de confirmação para a opção de gravar a imagem, visto que esta opção substitui a imagem original pela de aplicações do filtro. Este recurso evita perdas acidentais decorrentes da seleção da opção errada no menu.
+
+7)	Fim
+	+ ENTRADAS: Não há;
+	+ NOTA: Encerra o programa, que antes de selecionada esta opção reexibe o menu com as 7 opções listadas.
+
+
+	Para as opções 1), 3), 4) e 5), criou-se uma palavra reservada especial ("sair") que permite sair de uma certa opção sem precisar fazer modificações na imagem ou carregar uma nova figura, de modo a evitar problemas de seleção incorreta nas opções de menu. É aconselhável evitar, portanto, imagens de nome "sair.pgm" na opção 1.
