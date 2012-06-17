@@ -25,9 +25,9 @@ MAC0110 - EP3: SUAVIZAÇÃO DE IMAGENS
 
 -- SUAVIZAÇÃO COM DISTRIBUIÇÃO GAUSSIANA
 
-	A distribuição Gaussiana é um tipo de distribuição normal bivariada. Este tipo de comportamento de dados, comum na natureza, é o que mais ocorre ao se associar vários tipos de variáveis. Baseado na equação para um certo ponto, calcula-se o correspondente ao ponto por meio do raio de vizinhança e de um desvio-padrão, também transmitido pelos usuários como entrada para a criação da distribuição gaussiana.
-	Todos os valores são montados sobre a matriz correspondente aos valores dos pixels originais, sendo usado para tal uma matriz auxiliar igual à imagem antes da primeira modificação. Ao final, obtém-se a imagem suavizada.
-
+	A distribuição Gaussiana é um tipo de distribuição normal bivariada. Este tipo de comportamento de dados é o que mais ocorre ao se associar  variáveis. Usam-se o raio de vizinhança e o desvio-padrão, dados como entrada, para calcular a função gaussiana para cada ponto vizinho ao pixel pivô.
+	Primeiro, a função gaussiana é calculada para toda a redondeza do pixel central e a soma deles é armazenada. Em seguida, a função é recalculada para cada pixel vizinho e dividida pelo  somatório, de modo a criar um valor entre 0 e 1. Esse valor é, então, multiplicado pelo original (armazenados em uma matriz 'copia' que preserva a imagem inicial para os cálculos que requerem os valores originais).
+	O somatório dessas contas origina o valor do pixel suavizado, que é salvo na matriz da imagem principal. Ao final, obtém-se a imagem suavizada.
 
 	Em todos os casos, para valores acima de 255, o valor é truncado para este limite máximo. Para resultados não-inteiros, utiliza-se o arredondamento para cima para definir o valor a ser armazenado.
 

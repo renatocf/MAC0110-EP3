@@ -1,4 +1,4 @@
-/******************************************************/
+''/******************************************************/
 /**  MAC  110  -  Introdução à  Computação           **/
 /**  IME-USP   -  Primeiro  Semestre  de    2012     **/
 /**  Turma 45  -  Marcel Parolin Jackowski           **/
@@ -276,35 +276,64 @@ class Imagem
       }
     } // for
     
-    
+    double somatorioGaussiano = 0;
+    int n = 0;  // Criamos as duas variáveis ao lado
+                // fora dos laços para evitar o alocamento
+                // repetido de memória (que só é limpo pelo
+                // coletor de lixo da Máquina Virtual do Java
+                // posteriormente). A explicação deles está 
+                // colocada abaixo.
+      
     // Laço para percorrer a matriz 'copia' 
-    for (int i = 0; i <= copia.length - 1; i++) { //i corresponde às linhas
-      for (int j = 0; j <= copia[0].length - 1; j++) //j corresponde às colunas
+    for (int i = 0; i <= copia.length - 1; i++) { //i corresponde às linhas de copia
+      for (int j = 0; j <= copia[0].length - 1; j++) //j corresponde às colunas de copia
       {
-        int n = 0; // Valor do pixel suavizado
+        /**
+         * O laço abaixo percorre a vizinhança do pixel atual na matriz cópia. Ele calcula
+         * a função gaussiana em todos e armazena na variável 'somatorioGaussiano', cuja
+         * função é, depois, normalizar os efeitos do filtroGaussiano.
+         */
         
+        somatorioGaussiano = 0;
         for (int k = i - tamanho/2; k <= i + tamanho/2; k++) {//k corresponde às linhas em volta do pixel[i][j]
           for (int h = j - tamanho/2; h <= j + tamanho/2; h++) //h corresponde às colunas em volta do pixel[i][j]
           {
-            // Os pixels fora da imagem (que não existem, na verdade) são ignorados
-            // no cálculo da função gaussiana - esta metodologia evita a exceção 'IndexArrayOutOfBoundsException'
+            // Os pixels fora da imagem (que não existem, na verdade) são ignorados no cálculo 
+            // da função gaussiana - esta metodologia evita a exceção 'IndexArrayOutOfBoundsException'
             if(k < 0 || h < 0 || k > copia.length -1 || h > copia[0].length -1)
               continue;
             
-            // Calcula o valor a partir do pixel, baseado na função gaussiana, e depois soma no total
-            // que será o pixel suavizado
-            n += (Math.exp(-((i-k)*(i-k) + (j-h)*(j-h))/2*sigma*sigma) / (2 * Math.PI * sigma * sigma)) * copia[k][h];
-            //System.out.println(n);
+            somatorioGaussiano += (Math.exp(-((i-k)*(i-k) + (j-h)*(j-h))/2*sigma*sigma) / (2 * Math.PI * sigma * sigma));
           }
         }// fecha os dois for's (k,h)
         
+        /**
+         * O laço abaixo, por sua vez, percorre novamente a vizinhança do pixel de copia atual.
+         * Ele recalcula os valores da função gaussiana, mas os divide pelo somatório (calculado
+         * acima) para normalizar o valor (deixá-lo entre 0 e 1, como numa porcentagem) e depois
+         * o multiplica pelo valor do pixel original. Assim, obtemos o valor do pixel suavizado (n).
+         */
+        
+        n = 0;
+        for (int k = i - tamanho/2; k <= i + tamanho/2; k++) {//k corresponde às linhas em volta do pixel[i][j]
+          for (int h = j - tamanho/2; h <= j + tamanho/2; h++) //h corresponde às colunas em volta do pixel[i][j]
+          {
+            if(k < 0 || h < 0 || k > copia.length -1 || h > copia[0].length -1)
+              continue;
+            
+            // Calculando o valor do pixel suavizado:
+            n += (Math.exp(-((i-k)*(i-k) + (j-h)*(j-h))/2*sigma*sigma) / (2 * Math.PI * sigma * sigma)) * copia[k][h] / somatorioGaussiano;
+          }
+        }// fecha os dois for's (k,h)
+        
+        
+        // Agora, apenas corrigimos os valores, se estes 
         if (n >= 255) // Ajustando 'n' caso ele ultrapasse 255
           n = 255;
         
-        pixels[i][j] = (int) n;
-        
-      } // for (int j = 0; j <= copia[0].length - 1; j++) //j corresponde às colunas
-    } // for (int i = 0; i <= copia.length - 1; i++) { //i corresponde às linhas
+        pixels[i][j] = (int) arredondaParaCima(n);
+      } // Fecha os laços que percorrem a matriz 'copia'
+    }
     
   } // void filtroGaussiano(double sigma, int tamanho)
   
