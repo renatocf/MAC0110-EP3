@@ -327,8 +327,8 @@ class Imagem
         }// fecha os dois for's (k,h)
         
         
-        // Agora, apenas corrigimos os valores,
-        if (n >= 255) // ajustando 'n' caso ele ultrapasse 255
+        // Agora, apenas corrigimos os valores, se estes 
+        if (n >= 255) // Ajustando 'n' caso ele ultrapasse 255
           n = 255;
         
         pixels[i][j] = (int) arredondaParaCima(n);
